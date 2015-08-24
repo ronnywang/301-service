@@ -31,7 +31,7 @@ if (!property_exists($cache, $host)) {
 
 $url = $cache->{$host};
 if (preg_match('#\*$#', $url)) {
-    $url = rtrim($url, '*') . $_SERVER['REQUEST_URI'];
+    $url = rtrim(rtrim($url, '*'), '/') . $_SERVER['REQUEST_URI'];
 }
 
 header('X-Target: ' . $cache->{$host});
