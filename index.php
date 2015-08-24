@@ -35,4 +35,4 @@ if (preg_match('#\*$#', $url)) {
 }
 
 header('X-Target: ' . $cache->{$host});
-header('Location: ' . $url);
+header('Location: ' . $url, true, 301);
