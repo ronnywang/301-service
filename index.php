@@ -11,15 +11,15 @@ $host = $_SERVER['SERVER_NAME'];
 if (!property_exists($cache, $host)) {
     $txt_records = dns_get_record($host, DNS_TXT);
     foreach ($txt_records as $txt_record) {
-        if (!preg_match('#^301 (.*)$#', $txt_record['txt'], $matches)) {
+        if (!preg_match('#^(30[123]) (.*)$#', $txt_record['txt'], $matches)) {
             continue;
         }
 
-        if (!filter_var($matches[1], FILTER_VALIDATE_URL)) {
-            die("Invalid URL {$matches[1]}");
+        if (!filter_var($matches[2], FILTER_VALIDATE_URL)) {
+            die("Invalid URL {$matches[2]}");
         }
 
-        $cache->{$host} = $matches[1];
+        $cache->{$host} = $matches[2];
     }
 
     if (!property_exists($cache, $host)) {
@@ -35,4 +35,4 @@ if (preg_match('#\*$#', $url)) {
 }
 
 header('X-Target: ' . $cache->{$host});
-header('Location: ' . $url, true, 301);
+header('Location: ' . $url, true, $matches[1]);
